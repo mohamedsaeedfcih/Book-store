@@ -8,7 +8,7 @@ exports.getstorelist= async (req,res)=>{
         const storelistquery =queries.querylist.GET_STORE_LIST_QUERY;
         const result = await dbconnection.dbQuery(storelistquery)
 
-        return res.status(200).send(JSON.stringify(result))
+        return res.status(200).send(JSON.stringify(result.rows))
     } catch (err) {
         console.log('error : '+ err)
        return res.status(500).send({error : "failed to list store"})
@@ -18,8 +18,8 @@ exports.getstorelist= async (req,res)=>{
 
 exports.saveStore = async(req,res)=>{
     try {
-        var createdBy = 'admin'
-        var createdOn = new Date();
+        const createdBy = 'admin'
+        const createdOn = new Date();
        // req.body
        const storeName = req.body.storeName;
        const address = req.body.address;
@@ -31,7 +31,7 @@ exports.saveStore = async(req,res)=>{
 
        value =[storeName ,storecode,address,createdBy ,createdOn]
        const savestorequery =queries.querylist.SAVE_STORE_QUERY;
-       await dbconnection.dbconnection.dbQuery(savestorequery);
+       await dbconnection.dbQuery(savestorequery,value);
         return res.status(201).send("Successfully store created ");
     }       
     catch (err) {
