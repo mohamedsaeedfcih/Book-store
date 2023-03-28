@@ -5,7 +5,7 @@ const util = require('../util/utility')
 
 exports.getstorelist= async (req,res)=>{
     try {
-        const storelistquery =queries.querylist.GET_STORE_LIST_QUERY;
+        const storelistquery =queries.queryList.GET_STORE_LIST_QUERY;
         const result = await dbconnection.dbQuery(storelistquery)
 
         return res.status(200).send(JSON.stringify(result.rows))
@@ -27,11 +27,11 @@ exports.saveStore = async(req,res)=>{
        if(!storeName || !address){
            return res.status(500).send({ error: 'store name and address are required , can not empty' })
        }
-       let storecode = util.generateStoreCode();
+       let storeCode = util.generateStoreCode();
 
-       value =[storeName ,storecode,address,createdBy ,createdOn]
-       const savestorequery =queries.querylist.SAVE_STORE_QUERY;
-       await dbconnection.dbQuery(savestorequery,value);
+       values =[storeName , storeCode , address , createdBy , createdOn];
+       const savestorequery =queries.queryList.SAVE_STORE_QUERY;
+       await dbconnection.dbQuery(savestorequery,values);
         return res.status(201).send("Successfully store created ");
     }       
     catch (err) {

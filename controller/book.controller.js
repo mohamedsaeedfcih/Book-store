@@ -3,10 +3,10 @@ const dbconnection =require('../db/coneection')
 const util = require('../util/utility')
 
 
-exports.getbooklist= async (req,res)=>{
+exports.getBookList= async (req,res)=>{
     try {
-        const booklistquery =queries.querylist.GET_BOOK_LIST_QUERY;
-        const result = await dbconnection.dbQuery(booklistquery)
+        const bookListQuery = queries.queryList.GET_BOOK_LIST_QUERY;
+        const result = await dbconnection.dbQuery(bookListQuery)
 
         return res.status(200).send(JSON.stringify(result.rows))
     } catch (err) {
@@ -16,11 +16,11 @@ exports.getbooklist= async (req,res)=>{
     }
 }
 
-exports.getbookdetailslist= async (req,res)=>{
+exports.getBookDetails= async (req,res)=>{
     try {
         const bookId = req.params.bookId;
-        const bookdetailsquery =queries.querylist.GET_BOOK_DETAILS_LIST_QUERY;
-        const result = await dbconnection.dbQuery(bookdetailsquery, [bookId] )
+        const bookDetailsQuery = queries.queryList.GET_BOOK_DETAILS_QUERY;
+        const result = await dbconnection.dbQuery(bookDetailsQuery, [bookId] )
 
         return res.status(200).send(JSON.stringify(result.rows[0]))
     } catch (err) {
@@ -33,24 +33,25 @@ exports.getbookdetailslist= async (req,res)=>{
 
 exports.savebook = async(req,res)=>{
     try {
-        const createdBy = 'admin'
-        const createdOn = new Date();
-       // req.body
-       const title = req.body.title;
-       const description = req.body.description;
-       const publisher = req.body.publisher;
-       const auther = req.body.auther;
-       const pages = req.body.pages;
-       const storecode = req.body.storecode;
+         
+        var createdBy = "admin";
+        var createdOn = new Date();
+        // req.body
+        var title = req.body.title;
+        var description = req.body.description;
+        var author = req.body.author;
+        var publisher = req.body.publisher;
+        var pages = req.body.pages;
+        var storeCode = req.body.storeCode;
        //console.log("storeName : " + storeName   + " ----- address : " + address)
-       if(!title || !publisher || !auther || !storecode){
+       if(!title || !author || !publisher || !storeCode){
            return res.status(500).send({ error: 'title and publisher and auther and Storecode are required , can not empty' })
        }
        
 
-       value =[title ,auther,publisher,description,pages,storecode,createdBy ,createdOn]
-       const savebookquery =queries.querylist.SAVE_BOOK_QUERY;
-       await dbconnection.dbQuery(savebookquery,value);
+       values =[title , description , author , publisher , pages , storeCode,  createdBy , createdOn];
+       const savebookquery =queries.queryList.SAVE_BOOK_QUERY;
+       await dbconnection.dbQuery(savebookquery,values);
         return res.status(201).send("Successfully Add New book ");
     }       
     catch (err) {
