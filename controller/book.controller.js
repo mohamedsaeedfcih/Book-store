@@ -61,3 +61,55 @@ exports.savebook = async(req,res)=>{
    
     
 }
+exports.updatebook = async(req,res)=>{
+    try {
+         
+        var createdBy = "admin";
+        var createdOn = new Date();
+        // req.body
+        var bookId= req.body.bookId;
+        var title = req.body.title;
+        var description = req.body.description;
+        var author = req.body.author;
+        var publisher = req.body.publisher;
+        var pages = req.body.pages;
+        var storeCode = req.body.storeCode;
+       
+       if(!bookId || !title || !author || !publisher || !storeCode){
+           return res.status(500).send({ error: 'bookId and title and publisher and auther and Storecode are required , can not empty' })
+       }
+       
+
+       values =[title , description , author , publisher , pages , storeCode,  createdBy , createdOn ,bookId];
+       const updatebookquery =queries.queryList.UPDATE_BOOK_QUERY;
+       await dbconnection.dbQuery(updatebookquery,values);
+        return res.status(201).send("Successfully update book ");
+    }       
+    catch (err) {
+    console.log("Error : " + err);
+    return res.status(500).send({error : 'Failed to update book'});
+    }
+   
+    
+}
+
+exports.deleteBook = async (req , res) => {
+    var bookId = req.params.bookId;
+
+    try {
+      // validate not empty
+      
+      if(!bookId){
+        return res.status(500).send({ error: 'can not delete empty bookId' })
+        }
+
+        var deleteBookQuery = queries.queryList.DELETE_BOOK_QUERY;
+        await dbconnection.dbQuery(deleteBookQuery , [bookId]);
+
+        return res.status(200).send("Successfully book deleted ");
+    } catch (err) {
+        console.log("Error : " + err);
+        return res.status(500).send({error : 'Failed to delete book with id : '+ bookId});
+    }
+
+} 
