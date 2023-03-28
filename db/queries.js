@@ -17,7 +17,7 @@ exports.queryList ={
     UPDATE_BOOK_QUERY : `
 
                         UPDATE BMS.BOOK SET BOOK_TITLE=$1, BOOK_DESCRIPTION=$2, BOOK_AUTHOR=$3,
-                        BOOK_PUBLISHER=$4, BOOK_PAGES=$5, STORE_CODE=$6, CREATED_ON=$7, CREATED_BY=$8
+                        BOOK_PUBLISHER=$4, BOOK_PAGES=$5, STORE_CODE=$6, CREATED_BY=$7 , CREATED_ON=$8
                         WHERE BOOK_ID=$9` ,
 
     DELETE_BOOK_QUERY  :`
