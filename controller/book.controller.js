@@ -18,9 +18,9 @@ exports.getbooklist= async (req,res)=>{
 
 exports.getbookdetailslist= async (req,res)=>{
     try {
-        const bookid = req.params.id
+        const bookId = req.params.bookId;
         const bookdetailsquery =queries.querylist.GET_BOOK_DETAILS_LIST_QUERY;
-        const result = await dbconnection.dbQuery(bookdetailsquery,[bookid])
+        const result = await dbconnection.dbQuery(bookdetailsquery, [bookId] )
 
         return res.status(200).send(JSON.stringify(result.rows[0]))
     } catch (err) {
@@ -42,13 +42,13 @@ exports.savebook = async(req,res)=>{
        const auther = req.body.auther;
        const pages = req.body.pages;
        const storecode = req.body.storecode;
-       console.log("storeName : " + storeName   + " ----- address : " + address)
+       //console.log("storeName : " + storeName   + " ----- address : " + address)
        if(!title || !publisher || !auther || !storecode){
            return res.status(500).send({ error: 'title and publisher and auther and Storecode are required , can not empty' })
        }
        
 
-       value =[title ,description,publisher,auther,pages,storecode,createdBy ,createdOn]
+       value =[title ,auther,publisher,description,pages,storecode,createdBy ,createdOn]
        const savebookquery =queries.querylist.SAVE_BOOK_QUERY;
        await dbconnection.dbQuery(savebookquery,value);
         return res.status(201).send("Successfully Add New book ");
